@@ -1,26 +1,91 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="i8u-1U-4Y5">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Left Slider View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LeftSliderViewController" id="BYZ-38-t0r" customClass="LeftSliderViewController" customModule="SliderMenu" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nBk-TH-3oE">
+                                <rect key="frame" x="0.0" y="0.0" width="354" height="736"/>
+                                <color key="backgroundColor" red="0.83423229233588581" green="0.59313194626984778" blue="0.15646936541766149" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="nBk-TH-3oE" secondAttribute="bottom" id="JVc-B6-YRL"/>
+                            <constraint firstAttribute="trailing" secondItem="nBk-TH-3oE" secondAttribute="trailing" constant="60" id="Y7p-pK-1hi"/>
+                            <constraint firstItem="nBk-TH-3oE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="rPI-Gl-jXP"/>
+                            <constraint firstItem="nBk-TH-3oE" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="v5I-K0-3QW"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="136.23188405797103" y="138.58695652173915"/>
+        </scene>
+        <!--Right Slider View Controller-->
+        <scene sceneID="lBb-X2-PLa">
+            <objects>
+                <viewController storyboardIdentifier="RightSliderViewController" id="iql-G9-bgd" customClass="RightSliderViewController" customModule="SliderMenu" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lwn-vv-kcC"/>
+                        <viewControllerLayoutGuide type="bottom" id="zww-5I-pLW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PBr-8A-MDC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NpP-ad-u1u">
+                                <rect key="frame" x="60" y="0.0" width="354" height="736"/>
+                                <color key="backgroundColor" red="0.98039215690000003" green="0.38823529410000002" blue="0.56078431370000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="zww-5I-pLW" firstAttribute="top" secondItem="NpP-ad-u1u" secondAttribute="bottom" id="AkZ-K0-aDv"/>
+                            <constraint firstAttribute="trailing" secondItem="NpP-ad-u1u" secondAttribute="trailing" id="Mma-aE-00s"/>
+                            <constraint firstItem="NpP-ad-u1u" firstAttribute="top" secondItem="PBr-8A-MDC" secondAttribute="top" id="fEo-ch-Wgt"/>
+                            <constraint firstItem="NpP-ad-u1u" firstAttribute="leading" secondItem="PBr-8A-MDC" secondAttribute="leading" constant="60" id="qgR-PF-hnN"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X09-fP-rP7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="854" y="139"/>
+        </scene>
+        <!--Root View Controller-->
+        <scene sceneID="rZF-fT-eEB">
+            <objects>
+                <viewController storyboardIdentifier="RootViewController" id="i8u-1U-4Y5" customClass="RootViewController" customModule="SliderMenu" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HcI-HT-Ysp"/>
+                        <viewControllerLayoutGuide type="bottom" id="IUK-5r-ku3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="35N-Ff-446">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.94855215834409012" green="1" blue="0.67640287813135924" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KYq-0a-pQN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-528" y="139"/>
         </scene>
     </scenes>
 </document>

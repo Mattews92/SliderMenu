@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  RootViewController.swift
 //  SliderMenu
 //
 //  Created by Mathews on 17/05/17.
@@ -8,11 +8,13 @@
 
 import UIKit
 
-class ViewController: UIViewController {
 
+class RootViewController: BaseViewController {
+    var rootViewDelegate: SliderMenuDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        self.title = "Root VC"
     }
 
     override func didReceiveMemoryWarning() {
@@ -20,6 +22,4 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
 }
-
