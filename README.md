@@ -1,5 +1,5 @@
 # SliderMenu
-*SliderMenu Frame in Swift
+* SliderMenu Frame in Swift
 
 SliderMenu is an easy to integrate Slide Menu framework in Swift3.0.
 
