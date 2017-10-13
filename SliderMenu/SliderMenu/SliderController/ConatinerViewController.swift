@@ -38,6 +38,7 @@ class ContainerViewController: UIViewController {
     var rootNavController: UINavigationController?
     var leftSliderController: LeftSliderViewController?
     var rightSliderController: RightSliderViewController?
+    var overlayView: UIView?
 
     
     class var sharedInstance: ContainerViewController {
@@ -54,6 +55,24 @@ class ContainerViewController: UIViewController {
         self.addRootViewController()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleOrientationChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        super.viewWillDisappear(animated)
+    }
+    
+    
+    func handleOrientationChange() {
+        DispatchQueue.main.async{
+            if self.sliderMenuCurrentState == .leftOpen {
+                self.rootNavController?.view.frame.origin.x = self.rootViewController!.view.frame.size.width - CGFloat(centerViewExpandedOffset)
+            }
+        }
+    }
     
     func addRootViewController() {
         self.rootNavController = UINavigationController(rootViewController: rootViewController!)
@@ -152,13 +171,39 @@ extension ContainerViewController {
         }
     }
     
+    
     func setShadowToCentreView(showShadow: Bool) {
         if showShadow {
-            self.rootViewController?.view.layer.shadowOpacity = 0.8
+            self.rootNavController?.view.layer.masksToBounds = false
+            self.rootNavController?.view.layer.shadowColor = UIColor.darkGray.cgColor
+            self.rootNavController?.view.layer.shadowOpacity = 0.8
+            self.addOverlayOnCenterView()
         }
         else {
             self.rootViewController?.view.layer.shadowOpacity = 0.0
+            self.removeOverlayFromCenterView()
         }
+    }
+    
+    func addOverlayOnCenterView() {
+        if self.overlayView == nil {
+            self.overlayView = UIView()
+        }
+        self.rootViewController?.view.addSubview(self.overlayView!)
+        self.rootViewController?.view.backgroundColor = UIColor.white
+        self.overlayView?.translatesAutoresizingMaskIntoConstraints = false
+        let leadingConstraint = NSLayoutConstraint(item: self.overlayView!, attribute: .leading, relatedBy: .equal, toItem: self.rootViewController?.view, attribute: .leading, multiplier: 1.0, constant: 0)
+        let topConstraint = NSLayoutConstraint(item: self.overlayView!, attribute: .top, relatedBy: .equal, toItem: self.rootViewController?.topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 0)
+        let trailingConstraint = NSLayoutConstraint(item: self.overlayView!, attribute: .trailing, relatedBy: .equal, toItem: self.rootViewController?.view, attribute: .trailing, multiplier: 1.0, constant: 0)
+        let bottomConstraint = NSLayoutConstraint(item: self.overlayView!, attribute: .bottom, relatedBy: .equal, toItem: self.rootViewController?.view, attribute: .bottom, multiplier: 1.0, constant: 0)
+        self.rootViewController?.view.addConstraints([leadingConstraint, topConstraint, trailingConstraint, bottomConstraint])
+        self.rootViewController?.view.bringSubview(toFront: self.overlayView!)
+        self.overlayView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
+    }
+    
+    func removeOverlayFromCenterView() {
+        self.overlayView?.removeFromSuperview()
+        self.overlayView = nil
     }
 }
 
