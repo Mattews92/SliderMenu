@@ -53,6 +53,7 @@ class ContainerViewController: UIViewController {
         self.sliderMenuCurrentState = .bothCollapsed
         self.rootViewController = UIStoryboard.rootViewController()
         self.addRootViewController()
+        self.addGestureRecognizers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -84,6 +85,19 @@ class ContainerViewController: UIViewController {
         self.rootNavController?.didMove(toParentViewController: self)
         
     }
+    
+    func addGestureRecognizers() {
+        
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture(recognizer:)))
+        panGestureRecognizer.cancelsTouchesInView = false
+        panGestureRecognizer.delegate = self
+        rootNavController?.view.addGestureRecognizer(panGestureRecognizer)
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTapGesture(recognizer:)))
+        tapGestureRecognizer.delegate = self
+        tapGestureRecognizer.cancelsTouchesInView = false
+        rootNavController?.view.addGestureRecognizer(tapGestureRecognizer)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -101,9 +115,9 @@ extension ContainerViewController {
         }
     }
     
-    func animateLeftSlider() {
-        if self.sliderMenuCurrentState != .leftOpen {
-            self.sliderMenuCurrentState = .leftOpen
+    
+    func animateLeftSlider(expandSlider: Bool) {
+        if expandSlider {
             let centerViewAnimateOffset = self.rootViewController!.view.frame.size.width - CGFloat(centerViewExpandedOffset)
             self.animateCenterView(offset: centerViewAnimateOffset, handler: { (completed) in
             })
@@ -136,9 +150,8 @@ extension ContainerViewController {
         }
     }
     
-    func animateRightSlider() {
-        if self.sliderMenuCurrentState != .rightOpen {
-            self.sliderMenuCurrentState = .rightOpen
+    func animateRightSlider(expandSlider: Bool) {
+        if expandSlider {
             let centerViewAnimateOffset = -((self.rootViewController?.view.frame.size.width)! - CGFloat(centerViewExpandedOffset))
             self.animateCenterView(offset: centerViewAnimateOffset, handler: { (completed) in
             })
@@ -199,6 +212,7 @@ extension ContainerViewController {
         self.rootViewController?.view.addConstraints([leadingConstraint, topConstraint, trailingConstraint, bottomConstraint])
         self.rootViewController?.view.bringSubview(toFront: self.overlayView!)
         self.overlayView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
+        
     }
     
     func removeOverlayFromCenterView() {
@@ -208,21 +222,84 @@ extension ContainerViewController {
 }
 
 
-extension ContainerViewController: SliderMenuDelegate {
-    func toggleLeftSlider() {
-        let leftSliderExpanded = (self.sliderMenuCurrentState == .leftOpen)
-        if !leftSliderExpanded {
-            self.addLeftSlideMenu()
+// MARK: - GestureRecognizerDelegate
+extension ContainerViewController: UIGestureRecognizerDelegate {
+    
+    
+    func handlePanGesture(recognizer: UIPanGestureRecognizer) {
+        recognizer.cancelsTouchesInView = false
+        let gestureIsDraggingFromLeftToRight = (recognizer.velocity(in: view).x > 0)
+        switch(recognizer.state) {
+        case .began:
+            recognizer.cancelsTouchesInView = true
+            if (gestureIsDraggingFromLeftToRight && !(self.sliderMenuCurrentState == .rightOpen)) && (sliderMenuType == .leftOnly || sliderMenuType == .leftAndRight) {
+                self.toggleLeftSlider()
+            } else if (!gestureIsDraggingFromLeftToRight && !(self.sliderMenuCurrentState == .leftOpen)) && (sliderMenuType == .rightOnly || sliderMenuType == .leftAndRight){
+                self.toggleRightSlider()
+            }
+        case .changed:
+            if self.sliderMenuCurrentState != .bothCollapsed {
+                recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translation(in: view).x
+                recognizer.setTranslation(CGPoint.zero, in: view)
+            }
+        case .ended:
+            if (self.leftSliderController != nil) {
+                let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
+                self.animateLeftSlider(expandSlider: hasMovedGreaterThanHalfway)
+            }
+                
+            else if (self.rightSliderController != nil) {
+                let hasMovedGreaterThanHalfway = recognizer.view!.center.x < 0
+                self.animateRightSlider(expandSlider: hasMovedGreaterThanHalfway)
+            }
+        default:
+            break
         }
-        self.animateLeftSlider()
+    }
+    
+    
+    
+    func handleTapGesture(recognizer: UITapGestureRecognizer) {
+        
+        if (self.sliderMenuCurrentState == .leftOpen)
+        {
+            self.toggleLeftSlider()
+        }
+        else if (self.sliderMenuCurrentState == .rightOpen)
+        {
+            self.toggleRightSlider()
+        }
+        recognizer.cancelsTouchesInView = false
+    }
+    
+}
+
+
+// MARK: - SliderMenuDelegate
+extension ContainerViewController: SliderMenuDelegate {
+    
+    func toggleLeftSlider() {
+        if self.leftSliderController == nil && (sliderMenuType == .leftOnly || sliderMenuType == .leftAndRight) {
+            //open left slider if left slider is not already open and left slider is configured in SliderConfiguration file
+            self.addLeftSlideMenu()
+            self.sliderMenuCurrentState = .leftOpen
+            self.animateLeftSlider(expandSlider: true)
+        }
+        else {
+            self.animateLeftSlider(expandSlider: false)
+        }
     }
     
     func toggleRightSlider() {
-        let rightSliderExpanded = (self.sliderMenuCurrentState == .rightOpen)
-        if !rightSliderExpanded {
+        if self.rightSliderController == nil && (sliderMenuType == .rightOnly || sliderMenuType == .leftAndRight)  {
+            //open right slider if right slider is not already open and right slider is configured in SliderConfiguration file
             self.addRightSlideMenu()
+            self.sliderMenuCurrentState = .rightOpen
+            self.animateRightSlider(expandSlider: true)
         }
-        self.animateRightSlider()
+        else {
+            self.animateRightSlider(expandSlider: false)
+        }
     }
 }
 
