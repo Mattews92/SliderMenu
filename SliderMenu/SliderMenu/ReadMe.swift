@@ -23,8 +23,8 @@
  
  4. Extend all the ViewControllers which should display the Slider Menu from Base
     ViewController which inturn is inherited from UIViewController.
- 5. Extend all the TableViewControllers which should display the Slider Menu from Base
-    TableViewController which inturn is inherited from UIViewController.
+ 
+ 5. Extend all the TableViewControllers which should display the Slider Menu from BaseTableViewController which inturn is inherited from UIViewController.
  
  6. Customize the SlideMenu from the SliderMenuConstants.swift
  

@@ -56,6 +56,7 @@ class BaseViewController: UIViewController {
 
 }
 
+// MARK: - Slide Menu Buttons action targets
 extension BaseViewController {
     
     func leftMenuButtonAction (sender: UIButton) {

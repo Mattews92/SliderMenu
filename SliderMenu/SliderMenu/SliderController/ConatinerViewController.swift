@@ -10,9 +10,9 @@ import UIKit
 
 
 enum SliderMenuType {
-    case leftOnly
-    case rightOnly
-    case leftAndRight
+    case leftOnly //add only the left slider
+    case rightOnly //add only the right slider
+    case leftAndRight //add both left and right sliders
 }
 
 protocol SliderMenuDelegate {
@@ -108,6 +108,8 @@ class ContainerViewController: UIViewController {
 // Mark - LeftSliderMenu methods
 extension ContainerViewController {
     
+    
+    /// Method creates the left slider instance
     func addLeftSlideMenu() {
         if self.leftSliderController == nil {
             leftSliderController = UIStoryboard.leftSliderViewController()
@@ -116,6 +118,9 @@ extension ContainerViewController {
     }
     
     
+    /// Method determines the direction to animate the slider
+    ///
+    /// - Parameter expandSlider: boolean value which determines whether to expand or collapse the left slider
     func animateLeftSlider(expandSlider: Bool) {
         if expandSlider {
             let centerViewAnimateOffset = self.rootViewController!.view.frame.size.width - CGFloat(centerViewExpandedOffset)
@@ -132,6 +137,7 @@ extension ContainerViewController {
         }
     }
     
+    /// Method adds the left slider to the containerViewController
     func addLeftSlideMenuAsChild() {
         self.view.insertSubview((self.leftSliderController?.view)!, at: 0)
         self.addChildViewController(leftSliderController!)
@@ -143,6 +149,7 @@ extension ContainerViewController {
 //Mark - RightSliderMenu methods
 extension ContainerViewController {
     
+    /// Method creates the right slider instance
     func addRightSlideMenu() {
         if self.rightSliderController == nil {
             self.rightSliderController = UIStoryboard.rightSliderViewController()
@@ -150,6 +157,9 @@ extension ContainerViewController {
         }
     }
     
+    /// Method determines the direction to animate the slider
+    ///
+    /// - Parameter expandSlider: boolean value which determines whether to expand or collapse the right slider
     func animateRightSlider(expandSlider: Bool) {
         if expandSlider {
             let centerViewAnimateOffset = -((self.rootViewController?.view.frame.size.width)! - CGFloat(centerViewExpandedOffset))
@@ -165,6 +175,7 @@ extension ContainerViewController {
         }
     }
     
+    /// Method adds the right slider to the containerViewController
     func addRightSlideMenuAsChild() {
         self.view.insertSubview((self.rightSliderController?.view)!, at: 0)
         self.addChildViewController(self.rightSliderController!)
@@ -176,6 +187,11 @@ extension ContainerViewController {
 //Mark - Animate Center view controller
 extension ContainerViewController {
     
+    /// Method animates the center view to reveal or close the slider menu
+    ///
+    /// - Parameters:
+    ///   - offset: offset on x-axis the center view is to be animated to
+    ///   - handler: completion handler is invoked once the animation is committed
     func animateCenterView(offset: CGFloat, handler: @escaping (Bool)->Void) {
         UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             self.rootNavController?.view.frame.origin.x = offset
@@ -185,6 +201,9 @@ extension ContainerViewController {
     }
     
     
+    /// Method adds or remove shadow to center view
+    ///
+    /// - Parameter showShadow: boolean flag determines whether to add/remove shadow
     func setShadowToCentreView(showShadow: Bool) {
         if showShadow {
             self.rootNavController?.view.layer.masksToBounds = false
@@ -198,6 +217,9 @@ extension ContainerViewController {
         }
     }
     
+    /// Method adds an overlay view to the center view
+    /// Overlay differentiates the slider from center view and captures touch to center view elements
+    /// Method is invoked when slider is expanded
     func addOverlayOnCenterView() {
         if self.overlayView == nil {
             self.overlayView = UIView()
@@ -215,6 +237,8 @@ extension ContainerViewController {
         
     }
     
+    /// Method removes the overlay view added to the center view
+    /// Method is invoked when slider is collapsed
     func removeOverlayFromCenterView() {
         self.overlayView?.removeFromSuperview()
         self.overlayView = nil
@@ -226,16 +250,30 @@ extension ContainerViewController {
 extension ContainerViewController: UIGestureRecognizerDelegate {
     
     
+    /// Action target for pan gesture recognizer
+    /// Handle gesture if project has subsribed for that particular slider instance (left/ right)
+    ///
+    /// - Parameter recognizer: gesture recognizer instance which invoked the method
     func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         recognizer.cancelsTouchesInView = false
         let gestureIsDraggingFromLeftToRight = (recognizer.velocity(in: view).x > 0)
         switch(recognizer.state) {
         case .began:
             recognizer.cancelsTouchesInView = true
+            
+            //check the direction of pan gesture, whether the slider is already open and whether the slidercontroller has registered for that particluar slider menu (left/right)
             if (gestureIsDraggingFromLeftToRight && !(self.sliderMenuCurrentState == .rightOpen)) && (sliderMenuType == .leftOnly || sliderMenuType == .leftAndRight) {
-                self.toggleLeftSlider()
+                
+                //add the left slider menu and wait for the centerview to animate itself
+                self.addLeftSlideMenu()
+                self.sliderMenuCurrentState = .leftOpen
+                
             } else if (!gestureIsDraggingFromLeftToRight && !(self.sliderMenuCurrentState == .leftOpen)) && (sliderMenuType == .rightOnly || sliderMenuType == .leftAndRight){
-                self.toggleRightSlider()
+                
+                //add the right slider menu and wait for the centerview to animate itself
+                self.addRightSlideMenu()
+                self.sliderMenuCurrentState = .rightOpen
+                
             }
         case .changed:
             if self.sliderMenuCurrentState != .bothCollapsed {
@@ -243,6 +281,9 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
                 recognizer.setTranslation(CGPoint.zero, in: view)
             }
         case .ended:
+            
+            //animate the slider in either direction if the screen has swept half way accross
+            //The animateLeftSlider/animateRightSlider methods determine whether to open or close the slider depending on the enum variable value
             if (self.leftSliderController != nil) {
                 let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
                 self.animateLeftSlider(expandSlider: hasMovedGreaterThanHalfway)
@@ -259,6 +300,9 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
     
     
     
+    /// Action target for tap gesture recognizer
+    ///
+    /// - Parameter recognizer: gesture recognizer instance which invoked the method
     func handleTapGesture(recognizer: UITapGestureRecognizer) {
         
         if (self.sliderMenuCurrentState == .leftOpen)
@@ -278,6 +322,8 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
 // MARK: - SliderMenuDelegate
 extension ContainerViewController: SliderMenuDelegate {
     
+    
+    /// Open/Close left-slider menu - invoked by menu button or tap gesture
     func toggleLeftSlider() {
         if self.leftSliderController == nil && (sliderMenuType == .leftOnly || sliderMenuType == .leftAndRight) {
             //open left slider if left slider is not already open and left slider is configured in SliderConfiguration file
@@ -290,6 +336,7 @@ extension ContainerViewController: SliderMenuDelegate {
         }
     }
     
+    /// Open/Close right-slider menu - invoked by menu button or tap gesture
     func toggleRightSlider() {
         if self.rightSliderController == nil && (sliderMenuType == .rightOnly || sliderMenuType == .leftAndRight)  {
             //open right slider if right slider is not already open and right slider is configured in SliderConfiguration file
@@ -303,6 +350,8 @@ extension ContainerViewController: SliderMenuDelegate {
     }
 }
 
+
+// MARK: - UIStoryBoardExtension
 private extension UIStoryboard {
     class func mainStoryboard() -> UIStoryboard { return UIStoryboard(name: "Main", bundle: Bundle.main) }
     
