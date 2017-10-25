@@ -113,6 +113,8 @@ extension ContainerViewController {
     func addLeftSlideMenu() {
         if self.leftSliderController == nil {
             leftSliderController = UIStoryboard.leftSliderViewController()
+            leftSliderController?.rootViewDelegate = self.rootViewController
+            leftSliderController?.sliderMenuDelegate = self
             self.addLeftSlideMenuAsChild()
         }
     }
@@ -153,6 +155,8 @@ extension ContainerViewController {
     func addRightSlideMenu() {
         if self.rightSliderController == nil {
             self.rightSliderController = UIStoryboard.rightSliderViewController()
+            rightSliderController?.rootViewDelegate = self.rootViewController
+            rightSliderController?.sliderMenuDelegate = self
             self.addRightSlideMenuAsChild()
         }
     }

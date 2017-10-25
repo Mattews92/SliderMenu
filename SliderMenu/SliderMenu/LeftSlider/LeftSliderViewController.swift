@@ -10,6 +10,9 @@ import UIKit
 
 class LeftSliderViewController: UIViewController {
 
+    
+    var rootViewDelegate: RootViewControllerDelegate?
+    var sliderMenuDelegate: SliderMenuDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
 

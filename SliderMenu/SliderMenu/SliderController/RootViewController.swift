@@ -9,17 +9,37 @@
 import UIKit
 
 
+protocol RootViewControllerDelegate {
+    func didSelectMenu(item: String)
+}
+
 class RootViewController: BaseViewController {
     var rootViewDelegate: SliderMenuDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Root VC"
+        self.loadHomeScreen()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
+}
+
+extension RootViewController: RootViewControllerDelegate {
+    
+    
+    func didSelectMenu(item: String) {
+        switch item {
+        case "Home":
+            self.loadHomeScreen()
+        default:
+            break
+        }
+    }
+    
+    
+    func loadHomeScreen() {
+    }
 }

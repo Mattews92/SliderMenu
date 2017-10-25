@@ -10,6 +10,8 @@ import UIKit
 
 class RightSliderViewController: UIViewController {
 
+    var rootViewDelegate: RootViewControllerDelegate?
+    var sliderMenuDelegate: SliderMenuDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
 
