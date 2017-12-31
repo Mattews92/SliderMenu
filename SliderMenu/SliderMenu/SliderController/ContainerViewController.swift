@@ -10,9 +10,9 @@ import UIKit
 
 
 enum SliderMenuType {
-    case leftOnly //add only the left slider
-    case rightOnly //add only the right slider
-    case leftAndRight //add both left and right sliders
+    case leftOnly
+    case rightOnly
+    case leftAndRight
 }
 
 protocol SliderMenuDelegate {
@@ -39,6 +39,8 @@ class ContainerViewController: UIViewController {
     var leftSliderController: LeftSliderViewController?
     var rightSliderController: RightSliderViewController?
     var overlayView: UIView?
+    var panGestureRecognizer: UIPanGestureRecognizer?
+    var tapGestureRecognizer: UITapGestureRecognizer?
 
     
     class var sharedInstance: ContainerViewController {
@@ -53,7 +55,6 @@ class ContainerViewController: UIViewController {
         self.sliderMenuCurrentState = .bothCollapsed
         self.rootViewController = UIStoryboard.rootViewController()
         self.addRootViewController()
-        self.addGestureRecognizers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,12 +73,14 @@ class ContainerViewController: UIViewController {
             if self.sliderMenuCurrentState == .leftOpen {
                 self.rootNavController?.view.frame.origin.x = self.rootViewController!.view.frame.size.width - CGFloat(centerViewExpandedOffset)
             }
+            else if self.sliderMenuCurrentState == .rightOpen {
+                self.rootNavController?.view.frame.origin.x = -((self.rootViewController?.view.frame.size.width)! - CGFloat(centerViewExpandedOffset))
+            }
         }
     }
     
     func addRootViewController() {
         self.rootNavController = UINavigationController(rootViewController: rootViewController!)
-        rootViewController?.rootViewDelegate = self
         self.view.addSubview((self.rootNavController?
             .view)!)
         self.view.bringSubview(toFront: (self.rootNavController?.view)!)
@@ -87,16 +90,23 @@ class ContainerViewController: UIViewController {
     }
     
     func addGestureRecognizers() {
-        
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture(recognizer:)))
-        panGestureRecognizer.cancelsTouchesInView = false
-        panGestureRecognizer.delegate = self
-        rootNavController?.view.addGestureRecognizer(panGestureRecognizer)
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTapGesture(recognizer:)))
-        tapGestureRecognizer.delegate = self
-        tapGestureRecognizer.cancelsTouchesInView = false
-        rootNavController?.view.addGestureRecognizer(tapGestureRecognizer)
+        if self.tapGestureRecognizer == nil {
+            self.tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTapGesture(recognizer:)))
+            tapGestureRecognizer?.delegate = self
+            tapGestureRecognizer?.cancelsTouchesInView = false
+        }
+        rootNavController?.view.addGestureRecognizer(tapGestureRecognizer!)
+    }
+    
+    func removeGestureRecognizers() {
+        if let _ = self.panGestureRecognizer {
+            rootNavController?.view.removeGestureRecognizer(self.panGestureRecognizer!)
+        }
+        if let _ = self.tapGestureRecognizer {
+            rootNavController?.view.removeGestureRecognizer(self.tapGestureRecognizer!)
+        }
+        self.panGestureRecognizer = nil
+        self.tapGestureRecognizer = nil
     }
 
     override func didReceiveMemoryWarning() {
@@ -108,8 +118,6 @@ class ContainerViewController: UIViewController {
 // Mark - LeftSliderMenu methods
 extension ContainerViewController {
     
-    
-    /// Method creates the left slider instance
     func addLeftSlideMenu() {
         if self.leftSliderController == nil {
             leftSliderController = UIStoryboard.leftSliderViewController()
@@ -120,11 +128,8 @@ extension ContainerViewController {
     }
     
     
-    /// Method determines the direction to animate the slider
-    ///
-    /// - Parameter expandSlider: boolean value which determines whether to expand or collapse the left slider
     func animateLeftSlider(expandSlider: Bool) {
-        if expandSlider {
+        if expandSlider && self.leftSliderController != nil{
             let centerViewAnimateOffset = self.rootViewController!.view.frame.size.width - CGFloat(centerViewExpandedOffset)
             self.animateCenterView(offset: centerViewAnimateOffset, handler: { (completed) in
             })
@@ -134,12 +139,12 @@ extension ContainerViewController {
                 self.sliderMenuCurrentState = .bothCollapsed
                 
                 self.leftSliderController?.view.removeFromSuperview()
+                self.leftSliderController?.removeFromParentViewController()
                 self.leftSliderController = nil
             })
         }
     }
     
-    /// Method adds the left slider to the containerViewController
     func addLeftSlideMenuAsChild() {
         self.view.insertSubview((self.leftSliderController?.view)!, at: 0)
         self.addChildViewController(leftSliderController!)
@@ -151,21 +156,15 @@ extension ContainerViewController {
 //Mark - RightSliderMenu methods
 extension ContainerViewController {
     
-    /// Method creates the right slider instance
     func addRightSlideMenu() {
         if self.rightSliderController == nil {
             self.rightSliderController = UIStoryboard.rightSliderViewController()
-            rightSliderController?.rootViewDelegate = self.rootViewController
-            rightSliderController?.sliderMenuDelegate = self
             self.addRightSlideMenuAsChild()
         }
     }
     
-    /// Method determines the direction to animate the slider
-    ///
-    /// - Parameter expandSlider: boolean value which determines whether to expand or collapse the right slider
     func animateRightSlider(expandSlider: Bool) {
-        if expandSlider {
+        if expandSlider && self.rightSliderController != nil {
             let centerViewAnimateOffset = -((self.rootViewController?.view.frame.size.width)! - CGFloat(centerViewExpandedOffset))
             self.animateCenterView(offset: centerViewAnimateOffset, handler: { (completed) in
             })
@@ -174,12 +173,12 @@ extension ContainerViewController {
             self.animateCenterView(offset: 0, handler: { (completed) in
                 self.sliderMenuCurrentState = .bothCollapsed
                 self.rightSliderController?.view.removeFromSuperview()
+                self.rightSliderController?.removeFromParentViewController()
                 self.rightSliderController = nil
             })
         }
     }
     
-    /// Method adds the right slider to the containerViewController
     func addRightSlideMenuAsChild() {
         self.view.insertSubview((self.rightSliderController?.view)!, at: 0)
         self.addChildViewController(self.rightSliderController!)
@@ -191,11 +190,6 @@ extension ContainerViewController {
 //Mark - Animate Center view controller
 extension ContainerViewController {
     
-    /// Method animates the center view to reveal or close the slider menu
-    ///
-    /// - Parameters:
-    ///   - offset: offset on x-axis the center view is to be animated to
-    ///   - handler: completion handler is invoked once the animation is committed
     func animateCenterView(offset: CGFloat, handler: @escaping (Bool)->Void) {
         UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             self.rootNavController?.view.frame.origin.x = offset
@@ -204,10 +198,6 @@ extension ContainerViewController {
         }
     }
     
-    
-    /// Method adds or remove shadow to center view
-    ///
-    /// - Parameter showShadow: boolean flag determines whether to add/remove shadow
     func setShadowToCentreView(showShadow: Bool) {
         if showShadow {
             self.rootNavController?.view.layer.masksToBounds = false
@@ -221,28 +211,22 @@ extension ContainerViewController {
         }
     }
     
-    /// Method adds an overlay view to the center view
-    /// Overlay differentiates the slider from center view and captures touch to center view elements
-    /// Method is invoked when slider is expanded
     func addOverlayOnCenterView() {
-        if self.overlayView == nil {
-            self.overlayView = UIView()
-        }
-        self.rootViewController?.view.addSubview(self.overlayView!)
-        self.rootViewController?.view.backgroundColor = UIColor.white
-        self.overlayView?.translatesAutoresizingMaskIntoConstraints = false
-        let leadingConstraint = NSLayoutConstraint(item: self.overlayView!, attribute: .leading, relatedBy: .equal, toItem: self.rootViewController?.view, attribute: .leading, multiplier: 1.0, constant: 0)
-        let topConstraint = NSLayoutConstraint(item: self.overlayView!, attribute: .top, relatedBy: .equal, toItem: self.rootViewController?.topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 0)
-        let trailingConstraint = NSLayoutConstraint(item: self.overlayView!, attribute: .trailing, relatedBy: .equal, toItem: self.rootViewController?.view, attribute: .trailing, multiplier: 1.0, constant: 0)
-        let bottomConstraint = NSLayoutConstraint(item: self.overlayView!, attribute: .bottom, relatedBy: .equal, toItem: self.rootViewController?.view, attribute: .bottom, multiplier: 1.0, constant: 0)
-        self.rootViewController?.view.addConstraints([leadingConstraint, topConstraint, trailingConstraint, bottomConstraint])
-        self.rootViewController?.view.bringSubview(toFront: self.overlayView!)
-        self.overlayView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
+            if self.overlayView == nil {
+                self.overlayView = UIView()
+            }
+            self.rootNavController?.topViewController?.view?.addSubview(self.overlayView!)
+            self.overlayView?.translatesAutoresizingMaskIntoConstraints = false
+            let leadingConstraint = NSLayoutConstraint(item: self.overlayView!, attribute: .leading, relatedBy: .equal, toItem: self.rootNavController?.topViewController?.view, attribute: .leading, multiplier: 1.0, constant: 0)
+            let topConstraint = NSLayoutConstraint(item: self.overlayView!, attribute: .top, relatedBy: .equal, toItem: self.rootNavController?.topViewController?.topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 0)
+            let trailingConstraint = NSLayoutConstraint(item: self.overlayView!, attribute: .trailing, relatedBy: .equal, toItem: self.rootNavController?.topViewController?.view, attribute: .trailing, multiplier: 1.0, constant: 0)
+            let bottomConstraint = NSLayoutConstraint(item: self.overlayView!, attribute: .bottom, relatedBy: .equal, toItem: self.rootNavController?.topViewController?.view, attribute: .bottom, multiplier: 1.0, constant: 0)
+            self.rootNavController?.topViewController?.view.addConstraints([leadingConstraint, topConstraint, trailingConstraint, bottomConstraint])
         
+        self.rootNavController?.topViewController?.view.bringSubview(toFront: self.overlayView!)
+            self.overlayView?.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
     }
     
-    /// Method removes the overlay view added to the center view
-    /// Method is invoked when slider is collapsed
     func removeOverlayFromCenterView() {
         self.overlayView?.removeFromSuperview()
         self.overlayView = nil
@@ -258,9 +242,9 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
     /// Handle gesture if project has subsribed for that particular slider instance (left/ right)
     ///
     /// - Parameter recognizer: gesture recognizer instance which invoked the method
-    func handlePanGesture(recognizer: UIPanGestureRecognizer) {
+    func handlePanGesture(recognizer: UIScreenEdgePanGestureRecognizer) {
         recognizer.cancelsTouchesInView = false
-        let gestureIsDraggingFromLeftToRight = (recognizer.velocity(in: view).x > 0)
+        let gestureIsDraggingFromLeftToRight = recognizer.edges == .left ? true : false//(recognizer.velocity(in: view).x > 0)
         switch(recognizer.state) {
         case .began:
             recognizer.cancelsTouchesInView = true
@@ -281,7 +265,7 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
             }
         case .changed:
             if self.sliderMenuCurrentState != .bothCollapsed {
-                recognizer.view!.center.x = recognizer.view!.center.x + recognizer.translation(in: view).x
+                self.rootNavController?.view!.center.x = self.rootNavController!.view!.center.x + recognizer.translation(in: view).x
                 recognizer.setTranslation(CGPoint.zero, in: view)
             }
         case .ended:
@@ -289,12 +273,12 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
             //animate the slider in either direction if the screen has swept half way accross
             //The animateLeftSlider/animateRightSlider methods determine whether to open or close the slider depending on the enum variable value
             if (self.leftSliderController != nil) {
-                let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
+                let hasMovedGreaterThanHalfway = self.rootNavController!.view!.center.x > view.bounds.size.width
                 self.animateLeftSlider(expandSlider: hasMovedGreaterThanHalfway)
             }
                 
             else if (self.rightSliderController != nil) {
-                let hasMovedGreaterThanHalfway = recognizer.view!.center.x < 0
+                let hasMovedGreaterThanHalfway = self.rootNavController!.view!.center.x < 0
                 self.animateRightSlider(expandSlider: hasMovedGreaterThanHalfway)
             }
         default:
@@ -326,7 +310,6 @@ extension ContainerViewController: UIGestureRecognizerDelegate {
 // MARK: - SliderMenuDelegate
 extension ContainerViewController: SliderMenuDelegate {
     
-    
     /// Open/Close left-slider menu - invoked by menu button or tap gesture
     func toggleLeftSlider() {
         if self.leftSliderController == nil && (sliderMenuType == .leftOnly || sliderMenuType == .leftAndRight) {
@@ -355,7 +338,7 @@ extension ContainerViewController: SliderMenuDelegate {
 }
 
 
-// MARK: - UIStoryBoardExtension
+// MARK: - UIStoryBoard Extension
 private extension UIStoryboard {
     class func mainStoryboard() -> UIStoryboard { return UIStoryboard(name: "Main", bundle: Bundle.main) }
     

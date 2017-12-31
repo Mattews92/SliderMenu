@@ -13,13 +13,18 @@
 		213962E11ECC21BF0076B9AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 213962DF1ECC21BF0076B9AB /* LaunchScreen.storyboard */; };
 		213962EC1ECC21BF0076B9AB /* SliderMenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213962EB1ECC21BF0076B9AB /* SliderMenuTests.swift */; };
 		213962F71ECC21BF0076B9AB /* SliderMenuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213962F61ECC21BF0076B9AB /* SliderMenuUITests.swift */; };
+		218EADF01FF8EF10003D41E0 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218EADEE1FF8EF0F003D41E0 /* BaseTabBarController.swift */; };
+		218EADF11FF8EF10003D41E0 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218EADEF1FF8EF10003D41E0 /* ContainerViewController.swift */; };
+		218EADF61FF8EF43003D41E0 /* LeftSliderProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218EADF31FF8EF43003D41E0 /* LeftSliderProfileHeaderCell.swift */; };
+		218EADF71FF8EF43003D41E0 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218EADF41FF8EF43003D41E0 /* MenuTableViewCell.swift */; };
+		218EADFA1FF8F0AA003D41E0 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218EADF91FF8F0AA003D41E0 /* FirstViewController.swift */; };
+		218EADFC1FF8F0B2003D41E0 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218EADFB1FF8F0B2003D41E0 /* SecondViewController.swift */; };
 		21DE5CD81F8FA252003F6EAF /* LeftSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DE5CCD1F8FA252003F6EAF /* LeftSliderViewController.swift */; };
 		21DE5CD91F8FA252003F6EAF /* ReadMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DE5CCE1F8FA252003F6EAF /* ReadMe.swift */; };
 		21DE5CDA1F8FA252003F6EAF /* RightSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DE5CD01F8FA252003F6EAF /* RightSliderViewController.swift */; };
 		21DE5CDB1F8FA252003F6EAF /* SliderConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DE5CD21F8FA252003F6EAF /* SliderConfiguration.swift */; };
 		21DE5CDC1F8FA252003F6EAF /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DE5CD41F8FA252003F6EAF /* BaseTableViewController.swift */; };
 		21DE5CDD1F8FA252003F6EAF /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DE5CD51F8FA252003F6EAF /* BaseViewController.swift */; };
-		21DE5CDE1F8FA252003F6EAF /* ConatinerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DE5CD61F8FA252003F6EAF /* ConatinerViewController.swift */; };
 		21DE5CDF1F8FA252003F6EAF /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DE5CD71F8FA252003F6EAF /* RootViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,13 +58,18 @@
 		213962F21ECC21BF0076B9AB /* SliderMenuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SliderMenuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		213962F61ECC21BF0076B9AB /* SliderMenuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderMenuUITests.swift; sourceTree = "<group>"; };
 		213962F81ECC21BF0076B9AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		218EADEE1FF8EF0F003D41E0 /* BaseTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
+		218EADEF1FF8EF10003D41E0 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		218EADF31FF8EF43003D41E0 /* LeftSliderProfileHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftSliderProfileHeaderCell.swift; sourceTree = "<group>"; };
+		218EADF41FF8EF43003D41E0 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
+		218EADF91FF8F0AA003D41E0 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		218EADFB1FF8F0B2003D41E0 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		21DE5CCD1F8FA252003F6EAF /* LeftSliderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftSliderViewController.swift; sourceTree = "<group>"; };
 		21DE5CCE1F8FA252003F6EAF /* ReadMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadMe.swift; sourceTree = "<group>"; };
 		21DE5CD01F8FA252003F6EAF /* RightSliderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightSliderViewController.swift; sourceTree = "<group>"; };
 		21DE5CD21F8FA252003F6EAF /* SliderConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderConfiguration.swift; sourceTree = "<group>"; };
 		21DE5CD41F8FA252003F6EAF /* BaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		21DE5CD51F8FA252003F6EAF /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
-		21DE5CD61F8FA252003F6EAF /* ConatinerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConatinerViewController.swift; sourceTree = "<group>"; };
 		21DE5CD71F8FA252003F6EAF /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -120,7 +130,9 @@
 			isa = PBXGroup;
 			children = (
 				213962D61ECC21BF0076B9AB /* AppDelegate.swift */,
-				2139630A1ECC2A090076B9AB /* SliderMenuViewController */,
+				218EADF91FF8F0AA003D41E0 /* FirstViewController.swift */,
+				218EADFB1FF8F0B2003D41E0 /* SecondViewController.swift */,
+				21DE5CCB1F8FA252003F6EAF /* SliderMenu */,
 				21312B9A1ECD774A00AC90B4 /* StoryBoard */,
 				213962DD1ECC21BF0076B9AB /* Assets.xcassets */,
 				213962DF1ECC21BF0076B9AB /* LaunchScreen.storyboard */,
@@ -147,12 +159,13 @@
 			path = SliderMenuUITests;
 			sourceTree = "<group>";
 		};
-		2139630A1ECC2A090076B9AB /* SliderMenuViewController */ = {
+		218EADF21FF8EF43003D41E0 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				21DE5CCB1F8FA252003F6EAF /* SliderMenu */,
+				218EADF31FF8EF43003D41E0 /* LeftSliderProfileHeaderCell.swift */,
+				218EADF41FF8EF43003D41E0 /* MenuTableViewCell.swift */,
 			);
-			name = SliderMenuViewController;
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		21DE5CCB1F8FA252003F6EAF /* SliderMenu */ = {
@@ -170,6 +183,7 @@
 		21DE5CCC1F8FA252003F6EAF /* LeftSlider */ = {
 			isa = PBXGroup;
 			children = (
+				218EADF21FF8EF43003D41E0 /* Cell */,
 				21DE5CCD1F8FA252003F6EAF /* LeftSliderViewController.swift */,
 			);
 			path = LeftSlider;
@@ -194,9 +208,10 @@
 		21DE5CD31F8FA252003F6EAF /* SliderController */ = {
 			isa = PBXGroup;
 			children = (
-				21DE5CD41F8FA252003F6EAF /* BaseTableViewController.swift */,
 				21DE5CD51F8FA252003F6EAF /* BaseViewController.swift */,
-				21DE5CD61F8FA252003F6EAF /* ConatinerViewController.swift */,
+				218EADEE1FF8EF0F003D41E0 /* BaseTabBarController.swift */,
+				21DE5CD41F8FA252003F6EAF /* BaseTableViewController.swift */,
+				218EADEF1FF8EF10003D41E0 /* ContainerViewController.swift */,
 				21DE5CD71F8FA252003F6EAF /* RootViewController.swift */,
 			);
 			path = SliderController;
@@ -340,9 +355,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				21DE5CDC1F8FA252003F6EAF /* BaseTableViewController.swift in Sources */,
+				218EADF61FF8EF43003D41E0 /* LeftSliderProfileHeaderCell.swift in Sources */,
+				218EADF71FF8EF43003D41E0 /* MenuTableViewCell.swift in Sources */,
 				21DE5CDB1F8FA252003F6EAF /* SliderConfiguration.swift in Sources */,
+				218EADFC1FF8F0B2003D41E0 /* SecondViewController.swift in Sources */,
+				218EADF11FF8EF10003D41E0 /* ContainerViewController.swift in Sources */,
+				218EADFA1FF8F0AA003D41E0 /* FirstViewController.swift in Sources */,
+				218EADF01FF8EF10003D41E0 /* BaseTabBarController.swift in Sources */,
 				21DE5CDF1F8FA252003F6EAF /* RootViewController.swift in Sources */,
-				21DE5CDE1F8FA252003F6EAF /* ConatinerViewController.swift in Sources */,
 				21DE5CD91F8FA252003F6EAF /* ReadMe.swift in Sources */,
 				21DE5CD81F8FA252003F6EAF /* LeftSliderViewController.swift in Sources */,
 				21DE5CDA1F8FA252003F6EAF /* RightSliderViewController.swift in Sources */,

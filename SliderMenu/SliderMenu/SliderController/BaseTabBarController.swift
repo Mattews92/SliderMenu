@@ -1,14 +1,14 @@
 //
-//  BaseTableViewController.swift
-//  Marinfo
+//  BaseTabBarController.swift
+//  GuardianRPM
 //
-//  Created by Mathews on 30/05/17.
-//  Copyright © 2017 maritus. All rights reserved.
+//  Created by Mathews on 19/10/17.
+//  Copyright © 2017 guardian. All rights reserved.
 //
 
 import UIKit
 
-class BaseTableViewController: UITableViewController {
+class BaseTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,7 @@ class BaseTableViewController: UITableViewController {
     }
     
     func addLeftBarButton() {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 19, height: 11))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 19, height: 13))
         button.setBackgroundImage(UIImage(named: leftMenuImage), for: .normal)
         button.addTarget(self, action: #selector(self.leftMenuButtonAction(sender:)), for: .touchUpInside)
         
@@ -68,7 +68,7 @@ class BaseTableViewController: UITableViewController {
     
 }
 
-extension BaseTableViewController {
+extension BaseTabBarController {
     
     func leftMenuButtonAction (sender: UIButton) {
         ContainerViewController.sharedInstance.toggleLeftSlider()

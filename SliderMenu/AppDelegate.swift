@@ -22,8 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func configureNavigationController() {
         
-        UINavigationBar.appearance().tintColor = UIColor.green
-        UINavigationBar.appearance().barTintColor = UIColor.green
+        UINavigationBar.appearance().tintColor = UIColor.red
+        UINavigationBar.appearance().barTintColor = UIColor.white
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: UIFont(name: "Avenir", size: 15)!]
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName : UIFont(name: "Avenir", size: 15)!], for: .normal)
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)

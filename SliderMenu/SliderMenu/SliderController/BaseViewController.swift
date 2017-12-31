@@ -13,8 +13,9 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureSliderOptions()
+        self.registerForPanGestures()
     }
-
+    
     func configureSliderOptions() {
         switch  sliderMenuType {
         case .leftOnly:
@@ -31,23 +32,33 @@ class BaseViewController: UIViewController {
     }
     
     func addLeftBarButton() {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 19, height: 13))
         button.setBackgroundImage(UIImage(named: leftMenuImage), for: .normal)
-        button.addTarget(self, action: #selector(self.leftMenuButtonAction(sender:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(self.leftMenuButtonAction), for: .touchUpInside)
         
         let barbutton = UIBarButtonItem(customView: button)
         self.navigationItem.leftBarButtonItem = barbutton
     }
     
     func addRightBarButton() {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 19, height: 13))
         button.setBackgroundImage(UIImage(named: rightMenuImage), for: .normal)
-        button.addTarget(self, action: #selector(self.rightMenuButtonAction(sender:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(self.rightMenuButtonAction), for: .touchUpInside)
         
         let barbutton = UIBarButtonItem(customView: button)
         self.navigationItem.rightBarButtonItem = barbutton
     }
 
+    /// registers for pan gesture recognition to toggle the slide menu
+    func registerForPanGestures() {
+        let leftPan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(self.handlePan(sender:)))
+        leftPan.edges = .left
+        self.view.addGestureRecognizer(leftPan)
+        
+        let rightPan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(self.handlePan(sender:)))
+        rightPan.edges = .right
+        self.view.addGestureRecognizer(rightPan)
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -56,14 +67,17 @@ class BaseViewController: UIViewController {
 
 }
 
-// MARK: - Slide Menu Buttons action targets
 extension BaseViewController {
     
-    func leftMenuButtonAction (sender: UIButton) {
+    func leftMenuButtonAction () {
         ContainerViewController.sharedInstance.toggleLeftSlider()
     }
     
-    func rightMenuButtonAction (sender: UIButton) {
+    func rightMenuButtonAction () {
         ContainerViewController.sharedInstance.toggleRightSlider()
+    }
+    
+    func handlePan(sender: UIScreenEdgePanGestureRecognizer) {
+        ContainerViewController.sharedInstance.handlePanGesture(recognizer: sender)
     }
 }

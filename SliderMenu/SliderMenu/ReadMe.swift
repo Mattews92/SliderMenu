@@ -12,20 +12,26 @@
     related animations.
  
  2. Make the singleton Object of ContainerViewController as the rootViewController
-    of the AppDelegate Window to start with the slider Menu.
+    of the Key Window to start with the slider Menu.
+    Check the
+    func loadRootViewController();
+    method in AppDelegate to find how ContainerViewController is set as root.
  
- 3. Use the RootViewController as your home screen viewcontroller or
-    replace the RootViewController with your HomeSceen ViewController and extend it
-    from BaseViewController which inturn is inherited from UIViewController. When
-    replacing the RootViewController with your HomeScreen ViewController class,
-    replace all calls to the RootViewController class  in ContainerViewController
-    with corresponding custom class name.
+ 3. Use the RootViewController to push your view controllers on top of it.
+    Check the
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath);
+    method to find how menu selection is routed to RootViewController class to
+    push a new screen atop.
  
  4. Extend all the ViewControllers which should display the Slider Menu from Base
     ViewController which inturn is inherited from UIViewController.
  
- 5. Extend all the TableViewControllers which should display the Slider Menu from BaseTableViewController which inturn is inherited from UIViewController.
+ 5. Extend all the TableViewControllers which should display the Slider Menu from
+    BaseTableViewController which inturn is inherited from UIViewController.
  
- 6. Customize the SlideMenu from the SliderMenuConstants.swift
+ 6. Extend all the TabBarControllers which should display the Slider Menu from
+    BaseTabBarControllers which inturn is inherited from UITabBarController.
+ 
+ 8. Customize the SlideMenu from the SliderMenuConstants.swift
  
  */
