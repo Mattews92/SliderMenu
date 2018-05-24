@@ -123,8 +123,8 @@ extension ContainerViewController {
             leftSliderController = UIStoryboard.leftSliderViewController()
             leftSliderController?.rootViewDelegate = self.rootViewController
             leftSliderController?.sliderMenuDelegate = self
-            self.addLeftSlideMenuAsChild()
         }
+        self.addLeftSlideMenuAsChild()
     }
     
     
@@ -159,8 +159,8 @@ extension ContainerViewController {
     func addRightSlideMenu() {
         if self.rightSliderController == nil {
             self.rightSliderController = UIStoryboard.rightSliderViewController()
-            self.addRightSlideMenuAsChild()
         }
+        self.addRightSlideMenuAsChild()
     }
     
     func animateRightSlider(expandSlider: Bool) {
